@@ -30,11 +30,19 @@ resource "aws_vpc_peering_connection_accepter" "peer" {
   auto_accept               = true
 }
 
-resource "aws_security_group_rule" "example" {
-  type              = "egress"
-  from_port         = 8200
-  to_port           = 8200
-  protocol          = "tcp"
-  cidr_blocks       = ["172.25.16.0/20"]
-  security_group_id = "sg-123456"
+resource "aws_vpc" "main" {
+  cidr_block = "10.0.0.0/16"
+}
+
+resource "aws_security_group" "allow_vault_egress" {
+  name        = "allow_vault_egress"
+  description = "Allow Vault outbound traffic"
+  vpc_id      = aws_vpc.main.id
+
+  egress {
+    from_port        = 8200
+    to_port          = 8200
+    protocol         = "tcp"
+    cidr_blocks      = ["172.25.16.0/20"]
+  }
 }
