@@ -29,3 +29,12 @@ resource "aws_vpc_peering_connection_accepter" "peer" {
   vpc_peering_connection_id = hcp_aws_network_peering.peer.provider_peering_id
   auto_accept               = true
 }
+
+resource "aws_security_group_rule" "example" {
+  type              = "egress"
+  from_port         = 8200
+  to_port           = 8200
+  protocol          = "tcp"
+  cidr_blocks       = ["172.25.16.0/20"]
+  security_group_id = "sg-123456"
+}

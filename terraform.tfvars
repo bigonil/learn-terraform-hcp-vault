@@ -1,0 +1,1 @@
+tier = "standard_small"
